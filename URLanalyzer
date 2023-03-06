@@ -1,0 +1,67 @@
+const request = require('request');
+const cheerio = require('cheerio');
+
+function getMentionsCount(content, phrase) {
+  const lowerContent = content.toLowerCase();
+  const lowerPhrase = phrase.toLowerCase();
+  return lowerContent.split(lowerPhrase).length - 1;
+}
+
+// Input source URL
+const readline = require('readline').createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+readline.question('Enter source URL: ', sourceUrl => {
+  request(sourceUrl, (error, response, sourceContent) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+
+    // Get the word count of source URL
+    const sourceWordCount = sourceContent.split(' ').length;
+    console.log(`Source URL word count: ${sourceWordCount}`);
+
+    // Input search phrase
+    readline.question('Enter a phrase to search for: ', phrase => {
+
+      // Get count of mentions of the phrase in source URL
+      const sourceMentions = getMentionsCount(sourceContent, phrase);
+      console.log(`Number of mentions in source URL: ${sourceMentions}`);
+
+      // Input target URLs
+      const targetUrls = [];
+
+      function getTargetUrl(index) {
+        if (index < 3) {
+          readline.question('Enter target URL: ', targetUrl => {
+            targetUrls.push(targetUrl);
+            getTargetUrl(index + 1);
+          });
+        } else {
+          // Get count of mentions of the phrase in target URLs
+          targetUrls.forEach(targetUrl => {
+            request(targetUrl, (error, response, targetContent) => {
+              if (error) {
+                console.error(error);
+                return;
+              }
+
+              // Get the word count of target URL
+              const targetWordCount = targetContent.split(' ').length;
+              console.log(`Target URL word count: ${targetWordCount}`);
+
+              const targetMentions = getMentionsCount(targetContent, phrase);
+              console.log(`Number of mentions in target URL: ${targetMentions}`);
+            });
+          });
+          readline.close();
+        }
+      }
+
+      getTargetUrl(0);
+    });
+  });
+});
