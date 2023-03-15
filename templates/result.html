@@ -9,6 +9,7 @@
     <h1>SEO Helper Results</h1>
     <h2>Source URL</h2>
     <p>URL: {{ source_url }}</p>
+    <p>Word count: {{ source_word_count }}</p>
     <p>Mentions of "{{ phrase }}": {{ source_mentions }}</p>
 
     <h2>Target URLs</h2>
@@ -17,7 +18,7 @@
             <th>URL</th>
             <th>Word count</th>
             <th>Mentions of "{{ phrase }}"</th>
-            <th>Image Count</th>
+            <th>Image count</th>
         </tr>
         {% for url, word_count, mentions, image_count in target_results %}
             <tr>
@@ -29,13 +30,14 @@
         {% endfor %}
     </table>
 
-    <h3>Missing Topics</h3>
-    <p>The following words are present on all Target URLs, but missing from Source URL:</p>
+    <h2>Missing words</h2>
+    <p>The following words are present on target URLs, but missing from the source URL:</p>
     <ul>
-        {% for word in common_words %}
-        <li>{{ word }}</li>
+        {% for word in missing_words %}
+            <li>{{ word }}</li>
         {% endfor %}
     </ul>
+
     <br>
     <a href="/">Back to form</a>
 </body>
