@@ -1,5 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
+from flask import Flask, render_template, request
 
 def get_mentions_count(content, phrase):
     lower_content = content.lower()
@@ -36,8 +37,6 @@ for url in target_urls:
 
     target_mentions = get_mentions_count(target_content, phrase)
     print(f"Number of mentions in target URL: {target_mentions}")
-
-from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
