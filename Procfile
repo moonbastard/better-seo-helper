@@ -1,1 +1,1 @@
-web: gunicorn app:URLanalyzer
+web: gunicorn URLanalyzer:better-seo-helper
