@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SEO Helper Results</title>
+</head>
+<body>
+    <h1>SEO Helper Results</h1>
+    <h2>Source URL</h2>
+    <p>URL: {{ source_url }}</p>
+    <p>Word count: {{ source_word_count }}</p>
+    <p>Mentions of "{{ phrase }}": {{ source_mentions }}</p>
+
+    <h2>Target URLs</h2>
+    <table>
+        <tr>
+            <th>URL</th>
+            <th>Word count</th>
+            <th>Mentions of "{{ phrase }}"</th>
+        </tr>
+        {% for url, word_count, mentions in target_results %}
+            <tr>
+                <td>{{ url }}</td>
+                <td>{{ word_count }}</td>
+                <td>{{ mentions }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">Back to form</a>
+</body>
+</html>
