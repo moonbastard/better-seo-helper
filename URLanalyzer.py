@@ -36,4 +36,7 @@ def result():
         target_mentions = get_mentions_count(target_content, phrase)
         target_results.append((url, target_word_count, target_mentions))
 
-    return render_template('result.html', source_url=source_url, source
+    return render_template('result.html', source_url=source_url, source_mentions=source_mentions, phrase=phrase, target_results=target_results)
+
+if __name__ == '__main__':
+    app.run()
