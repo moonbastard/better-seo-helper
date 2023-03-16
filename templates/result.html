@@ -14,21 +14,28 @@
 
     <h2>Target URLs</h2>
     <table>
-        <tr>
-            <th>URL</th>
-            <th>Word count</th>
-            <th>Mentions of "{{ phrase }}"</th>
-            <th>Image count</th>
-        </tr>
-        {% for url, word_count, mentions, image_count in target_results %}
-            <tr>
-                <td>{{ url }}</td>
-                <td>{{ word_count }}</td>
-                <td>{{ mentions }}</td>
-                <td>{{ image_count }}</td>
-            </tr>
-        {% endfor %}
-    </table>
+  <thead>
+    <tr>
+      <th>URL</th>
+      <th>Word Count</th>
+      <th>Mentions Count</th>
+      <th>Image Count</th>
+      <th>Link Density</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for result in target_results %}
+    <tr>
+      <td>{{ result[0] }}</td>
+      <td>{{ result[1] }}</td>
+      <td>{{ result[2] }}</td>
+      <td>{{ result[3] }}</td>
+      <td>{{ result[4] }}%</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 
     <h2>Missing words</h2>
     <p>The following words are present on target URLs, but missing from the source URL:</p>
