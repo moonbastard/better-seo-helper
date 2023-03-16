@@ -52,4 +52,4 @@ def result():
     return render_template('result.html', source_url=source_url, source_mentions=source_mentions, phrase=phrase, target_results=target_results, common_words=common_words)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
