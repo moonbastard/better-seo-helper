@@ -10,11 +10,14 @@ def get_mentions_count(content, phrase):
 def analyze_page(url):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
-    body = soup.body.get_text(' ', strip=True)
+    body = soup.find('body').get_text(' ', strip=True)
     word_count = len(body.split())
-    image_count = len(soup.body.find_all('img'))
+    image_count = len(soup.find_all('img'))
+    link_count = len(soup.find_all('a'))
+    link_density = (link_count / word_count) * 100 if word_count > 0 else 0
     words = body.lower().split()
-    return body, word_count, image_count, words
+    return body, word_count, image_count, link_density, words
+
 
 app = Flask(__name__)
 
