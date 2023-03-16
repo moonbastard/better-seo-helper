@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
 
-app = Flask(URLanalyzer)
 
 def get_mentions_count(content, phrase):
     lower_content = content.lower()
@@ -23,7 +22,7 @@ def analyze_page(url):
     words = body.lower().split()
     return body, word_count, image_count, words, link_density
 
-# ...
+app = Flask(__name__)
 
 @app.route('/result', methods=['POST'])
 def result():
