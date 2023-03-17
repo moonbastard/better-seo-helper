@@ -70,7 +70,7 @@ def result():
     source_3_header_count = count_tags(source_3_soup, ['h1', 'h2', 'h3', 'h4'])
     source_3_emoji_count = count_emojis(source_3_soup)
     
-    # Render result.html template and pass in variables
+# Render result.html template and pass in variables
     return render_template('result.html', target_url=target_url, source_url_1=source_url_1,
                            source_url_2=source_url_2, source_url_3=source_url_3, search_kw=search_kw,
                            target_img_count=target_img_count, target_link_count=target_link_count,
@@ -85,6 +85,6 @@ def result():
                            source_3_header_count=source_3_header_count, source_3_emoji_count=source_3_emoji_count,
                            target_page_speed=target_page_speed)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
+
