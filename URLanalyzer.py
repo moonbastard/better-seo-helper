@@ -1,55 +1,95 @@
-import requests
-from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
-
-
-def get_mentions_count(content, phrase):
-    lower_content = content.lower()
-    lower_phrase = phrase.lower()
-    return lower_content.count(lower_phrase)
-
-def analyze_page(url):
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    body = soup.body.get_text(' ', strip=True)
-    word_count = len(body.split())
-    image_count = len(soup.body.find_all('img'))
-    link_count = len(soup.body.find_all('a'))
-    if link_count > 0:
-        link_density = image_count / link_count
-    else:
-        link_density = 0
-    words = body.lower().split()
-    return body, word_count, image_count, words, link_density
+from selenium import webdriver
+from bs4 import BeautifulSoup
+import requests
+import re
+import emoji
 
 app = Flask(__name__)
 
+def count_tags(soup, tag):
+    return len(soup.find_all(tag))
+
+def count_words(soup):
+    text = soup.get_text()
+    words = re.findall(r'\b\w+\b', text)
+    return len(words)
+
+def count_emojis(soup):
+    text = soup.get_text()
+    return len([c for c in text if c in emoji.UNICODE_EMOJI])
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
 @app.route('/result', methods=['POST'])
 def result():
-    source_url = request.form['source_url']
-    phrase = request.form['phrase']
-    target_urls = [
-        request.form['target_url_1'],
-        request.form['target_url_2'],
-        request.form['target_url_3'],
-    ]
+    target_url = request.form['target_url']
+    source_url_1 = request.form['source_url_1']
+    source_url_2 = request.form['source_url_2']
+    source_url_3 = request.form['source_url_3']
+    search_kw = request.form['search_kw'].lower()
 
-    source_body, source_word_count, source_image_count, source_words, source_link_density = analyze_page(source_url)
-    source_mentions = get_mentions_count(source_body, phrase)
+    # Get page source using Requests library
+    target_response = requests.get(target_url)
+    source_1_response = requests.get(source_url_1)
+    source_2_response = requests.get(source_url_2)
+    source_3_response = requests.get(source_url_3)
 
-    target_results = []
-    target_words_list = []
-    for url in target_urls:
-        target_body, target_word_count, target_image_count, target_words, target_link_density = analyze_page(url)
-        target_mentions = get_mentions_count(target_body, phrase)
-        target_results.append((url, target_word_count, target_mentions, target_image_count, target_link_density))
-        target_words_list.append(target_words)
+    # Get page source using Selenium to measure page speed
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    driver = webdriver.Chrome(options=options)
+    driver.get(target_url)
+    target_page_speed = driver.execute_script("return performance.timing.loadEventEnd - performance.timing.navigationStart;")
+    driver.quit()
 
-    common_words = set(target_words_list[0]) & set(target_words_list[1]) & set(target_words_list[2]) - set(source_words)
-    words_to_remove = ["the", "of", "and", "a", "to", "in", "is", "you", "that", "he", "was", "for", "on", "are", "as", "with", "his", "they", "i", "at", "there", "some", "my", "of", "be", "this", "have", "each", "which", "she", "do", "how", "their", "if", "will", "up", "other", "about", "out", "many", "then", "them", "these", "so", "some", "her", "would", "make", "like", "him", "into", "time", "has", "look", "two", "more", "write", "go", "see", "number", "no", "way", "could", "people", "my", "than", "first", "water", "been", "call", "who", "oil", "its", "now", "find", "long", "down", "day", "did", "get", "come", "made", "may", "part"]
-    common_words = [word for word in common_words if word not in words_to_remove]
+    # Parse HTML content using BeautifulSoup
+    target_soup = BeautifulSoup(target_response.content, 'html.parser')
+    source_1_soup = BeautifulSoup(source_1_response.content, 'html.parser')
+    source_2_soup = BeautifulSoup(source_2_response.content, 'html.parser')
+    source_3_soup = BeautifulSoup(source_3_response.content, 'html.parser')
 
-    return render_template('result.html', source_url=source_url, source_mentions=source_mentions, phrase=phrase, target_results=target_results, common_words=common_words)
+    # Count tags, words, and emojis
+    target_img_count = count_tags(target_soup, 'img')
+    target_link_count = count_tags(target_soup, 'a')
+    target_word_count = count_words(target_soup)
+    target_header_count = count_tags(target_soup, ['h1', 'h2', 'h3', 'h4'])
+    target_emoji_count = count_emojis(target_soup)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+    source_1_img_count = count_tags(source_1_soup, 'img')
+    source_1_link_count = count_tags(source_1_soup, 'a')
+    source_1_word_count = count_words(source_1_soup)
+    source_1_header_count = count_tags(source_1_soup, ['h1', 'h2', 'h3', 'h4'])
+    source_1_emoji_count = count_emojis(source_1_soup)
+
+    source_2_img_count = count_tags(source_2_soup, 'img')
+    source_2_link_count = count_tags(source_2_soup, 'a')
+    source_2_word_count = count_words(source_2_soup)
+    source_2_header_count = count_tags(source_2_soup, ['h1', 'h2', 'h3', 'h4'])
+    source_2_emoji_count = count_emojis(source_2_soup)
+
+    source_3_img_count = count_tags(source_3_soup, 'img')
+    source_3_link_count = count_tags(source_3_soup, 'a')
+    source_3_word_count = count_words(source_3_soup)
+    source_3_header_count = count_tags(source_3_soup, ['h1', 'h2', 'h3', 'h4'])
+    source_3_emoji_count = count_emojis(source_3_soup)
+    
+# Render result.html template and pass in variables
+    return render_template('result.html', target_url=target_url, source_url_1=source_url_1,
+                       source_url_2=source_url_2, source_url_3=source_url_3, search_kw=search_kw,
+                       target_img_count=target_img_count, target_link_count=target_link_count,
+                       target_word_count=target_word_count, target_header_count=target_header_count,
+                       target_emoji_count=target_emoji_count, source_1_img_count=source_1_img_count,
+                       source_1_link_count=source_1_link_count, source_1_word_count=source_1_word_count,
+                       source_1_header_count=source_1_header_count, source_1_emoji_count=source_1_emoji_count,
+                       source_2_img_count=source_2_img_count, source_2_link_count=source_2_link_count,
+                       source_2_word_count=source_2_word_count, source_2_header_count=source_2_header_count,
+                       source_2_emoji_count=source_2_emoji_count, source_3_img_count=source_3_img_count,
+                       source_3_link_count=source_3_link_count, source_3_word_count=source_3_word_count,
+                       source_3_header_count=source_3_header_count, source_3_emoji_count=source_3_emoji_count,
+                       target_page_speed=target_page_speed)
+
+if name == 'main':
+app.run(debug=True)
