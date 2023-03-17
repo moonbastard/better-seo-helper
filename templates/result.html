@@ -1,54 +1,61 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEO Helper Results</title>
-</head>
-<body>
-    <h1>SEO Helper Results</h1>
-    <h2>Source URL</h2>
-    <p>URL: {{ source_url }}</p>
-    <p>Word count: {{ source_word_count }}</p>
-    <p>Mentions of "{{ phrase }}": {{ source_mentions }}</p>
-
-    <h2>Target URLs</h2>
+<html>
+  <head>
+    <title>Page Analysis Results</title>
+  </head>
+  <body>
+    <h1>Page Analysis Results</h1>
     <table>
-        <thead>
-            <tr>
-                <th>URL</th>
-                <th>Word Count</th>
-                <th>Mentions Count</th>
-                <th>Image Count</th>
-                <th>Image Density</th>
-                <th>Link Density</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for result in target_results %}
-            <tr>
-                <td>{{ result[0] }}</td>
-                <td>{{ result[1] }}</td>
-                <td>{{ result[2] }}</td>
-                <td>{{ result[3] }}</td>
-                <td>{{ result[4] }}%</td>
-                <td>{{ result[5] }}%</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+      <tr>
+        <th></th>
+        <th>Target URL</th>
+        <th>Source URL 1</th>
+        <th>Source URL 2</th>
+<th>Source URL 3</th>
+</tr>
+<tr>
+<td>Image Count</td>
+<td>{{ target_img_count }}</td>
+<td>{{ source_1_img_count }}</td>
+<td>{{ source_2_img_count }}</td>
+<td>{{ source_3_img_count }}</td>
+</tr>
+<tr>
+<td>Link Count</td>
+<td>{{ target_link_count }}</td>
+<td>{{ source_1_link_count }}</td>
+<td>{{ source_2_link_count }}</td>
+<td>{{ source_3_link_count }}</td>
+</tr>
+<tr>
+<td>Word Count</td>
+<td>{{ target_word_count }}</td>
+<td>{{ source_1_word_count }}</td>
+<td>{{ source_2_word_count }}</td>
+<td>{{ source_3_word_count }}</td>
+</tr>
+<tr>
+<td>Header Count</td>
+<td>{{ target_header_count }}</td>
+<td>{{ source_1_header_count }}</td>
+<td>{{ source_2_header_count }}</td>
+<td>{{ source_3_header_count }}</td>
+</tr>
+<tr>
+<td>Emoji Count</td>
+<td>{{ target_emoji_count }}</td>
+<td>{{ source_1_emoji_count }}</td>
+<td>{{ source_2_emoji_count }}</td>
+<td>{{ source_3_emoji_count }}</td>
+</tr>
+<tr>
+<td>Page Speed (ms)</td>
+<td>{{ target_page_speed }}</td>
+<td>N/A</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+</table>
 
-    <h2>Missing words</h2>
-    <p>The following words are present on target URLs, but missing from the source URL:</p>
-    <ul>
-        {% for word in missing_words %}
-            <li>{{ word }}</li>
-        {% endfor %}
-    </ul>
-
-    <p>Common words length: {{ common_words | length }}</p>
-
-    <br>
-    <a href="/">Back to form</a>
-</body>
+  </body>
 </html>
