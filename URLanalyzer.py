@@ -78,18 +78,19 @@ def result():
     
 # Render result.html template and pass in variables
     return render_template('result.html', target_url=target_url, source_url_1=source_url_1,
-                       source_url_2=source_url_2, source_url_3=source_url_3, search_kw=search_kw,
-                       target_img_count=target_img_count, target_link_count=target_link_count,
-                       target_word_count=target_word_count, target_header_count=target_header_count,
-                       target_emoji_count=target_emoji_count, source_1_img_count=source_1_img_count,
-                       source_1_link_count=source_1_link_count, source_1_word_count=source_1_word_count,
-                       source_1_header_count=source_1_header_count, source_1_emoji_count=source_1_emoji_count,
-                       source_2_img_count=source_2_img_count, source_2_link_count=source_2_link_count,
-                       source_2_word_count=source_2_word_count, source_2_header_count=source_2_header_count,
-                       source_2_emoji_count=source_2_emoji_count, source_3_img_count=source_3_img_count,
-                       source_3_link_count=source_3_link_count, source_3_word_count=source_3_word_count,
-                       source_3_header_count=source_3_header_count, source_3_emoji_count=source_3_emoji_count,
-                       target_page_speed=target_page_speed)
+                           source_url_2=source_url_2, source_url_3=source_url_3, search_kw=search_kw,
+                           target_img_count=target_img_count, target_link_count=target_link_count,
+                           target_word_count=target_word_count, target_header_count=target_header_count,
+                           target_emoji_count=target_emoji_count, source_1_img_count=source_1_img_count,
+                           source_1_link_count=source_1_link_count, source_1_word_count=source_1_word_count,
+                           source_1_header_count=source_1_header_count, source_1_emoji_count=source_1_emoji_count,
+                           source_2_img_count=source_2_img_count, source_2_link_count=source_2_link_count,
+                           source_2_word_count=source_2_word_count, source_2_header_count=source_2_header_count,
+                           source_2_emoji_count=source_2_emoji_count, source_3_img_count=source_3_img_count,
+                           source_3_link_count=source_3_link_count, source_3_word_count=source_3_word_count,
+                           source_3_header_count=source_3_header_count, source_3_emoji_count=source_3_emoji_count,
+                           target_page_speed=target_page_speed)
 
-if name == 'main':
+if __name__ == '__main__':
     app.run(debug=True)
+
