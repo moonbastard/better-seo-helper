@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SEO Helper</title>
-</head>
-<body>
-    <h1>SEO Helper</h1>
+<html>
+  <head>
+    <title>Page Analysis Tool</title>
+  </head>
+  <body>
+    <h1>Page Analysis Tool</h1>
     <form action="/result" method="POST">
-        <label for="source_url">Enter source URL:</label>
-        <input type="url" id="source_url" name="source_url" required><br><br>
-        <label for="phrase">Enter a phrase to search for:</label>
-        <input type="text" id="phrase" name="phrase" required><br><br>
-        <label for="target_url_1">Enter target URL 1:</label>
-        <input type="url" id="target_url_1" name="target_url_1" required><br><br>
-        <label for="target_url_2">Enter target URL 2:</label>
-        <input type="url" id="target_url_2" name="target_url_2" required><br><br>
-        <label for="target_url_3">Enter target URL 3:</label>
-        <input type="url" id="target_url_3" name="target_url_3" required><br><br>
-        <input type="submit" value="Submit">
+      <label for="target_url">Target URL:</label>
+      <input type="url" id="target_url" name="target_url" required><br>
+
+      <label for="source_url_1">Source URL 1:</label>
+      <input type="url" id="source_url_1" name="source_url_1" required><br>
+
+      <label for="source_url_2">Source URL 2:</label>
+      <input type="url" id="source_url_2" name="source_url_2" required><br>
+
+      <label for="source_url_3">Source URL 3:</label>
+      <input type="url" id="source_url_3" name="source_url_3" required><br>
+
+      <label for="search_kw">Search Keyword:</label>
+      <input type="text" id="search_kw" name="search_kw" required><br>
+
+      <button type="submit">Analyze</button>
     </form>
-</body>
+  </body>
 </html>
