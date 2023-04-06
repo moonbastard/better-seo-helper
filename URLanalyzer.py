@@ -6,8 +6,10 @@ import emoji
 
 app = Flask(__name__)
 
-def count_tags(soup, tag):
-    return len(soup.find_all(tag))
+def count_tags(soup, tags):
+    if isinstance(tags, str):
+        tags = [tags]
+    return sum(len(soup.find_all(tag)) for tag in tags)
 
 def count_words(soup):
     text = soup.get_text()
@@ -38,6 +40,9 @@ def result():
 
     # Measure page speed using Requests library
     target_page_speed = target_response.elapsed.total_seconds() * 1000
+    source_1_page_speed = source_1_response.elapsed.total_seconds() * 1000
+    source_2_page_speed = source_2_response.elapsed.total_seconds() * 1000
+    source_3_page_speed = source_3_response.elapsed.total_seconds() * 1000
 
     # Parse HTML content using BeautifulSoup
     target_soup = BeautifulSoup(target_response.content, 'html.parser')
@@ -69,7 +74,7 @@ def result():
     source_3_word_count = count_words(source_3_soup)
     source_3_header_count = count_tags(source_3_soup, ['h1', 'h2', 'h3', 'h4'])
     source_3_emoji_count = count_emojis(source_3_soup)
-    
+
     # Render result.html template and pass in variables
     return render_template('result.html', target_url=target_url, source_url_1=source_url_1,
                            source_url_2=source_url_2, source_url_3=source_url_3, search_kw=search_kw,
@@ -83,9 +88,8 @@ def result():
                            source_2_emoji_count=source_2_emoji_count, source_3_img_count=source_3_img_count,
                            source_3_link_count=source_3_link_count, source_3_word_count=source_3_word_count,
                            source_3_header_count=source_3_header_count, source_3_emoji_count=source_3_emoji_count,
-                           target_page_speed=target_page_speed)
-
+                           target_page_speed=target_page_speed, source_1_page_speed=source_1_page_speed,
+                           source_2_page_speed=source_2_page_speed, source_3_page_speed=source_3_page_speed)
 
 if __name__ == '__main__':
     app.run(debug=True)
-
